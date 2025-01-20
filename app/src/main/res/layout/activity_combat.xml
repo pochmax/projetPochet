@@ -29,7 +29,7 @@
                     android:id="@+id/playerPowerLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player Power:"
+                    android:text="@string/pPower"
                     android:textSize="18sp" />
 
                 <TextView
@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/playerPowerLabel"
-                    android:text="Player Health:"
+                    android:text="@string/pHealth"
                     android:textSize="18sp" />
 
                 <TextView
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/playerHealthLabel"
             android:layout_marginTop="16dp"
-            android:text="Enemy"
+            android:text="@string/enemy"
             android:textSize="18sp" />
 
         <TextView
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/enemyPowerLabel"
                 android:layout_marginTop="16dp"
-                android:text="Attack" />
+                android:text="@string/attack" />
 
             <Button
                 android:id="@+id/fleeButton"
@@ -100,7 +100,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_toEndOf="@id/attackButton"
                 android:layout_marginStart="16dp"
-                android:text="Flee" />
+                android:text="@string/flee" />
         </LinearLayout>
 
     </LinearLayout>

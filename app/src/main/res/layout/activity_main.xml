@@ -12,7 +12,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Maitre du Donjon"
+        android:text="@string/title"
         android:textSize="30sp"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
@@ -137,7 +137,7 @@
                 android:id="@+id/unexploredRoomsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Unexplored Rooms:"
+                android:text="@string/unexploredRooms"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/unexploredRooms"
@@ -156,7 +156,7 @@
                 android:id="@+id/playerPowerLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Player Power:"
+                android:text="@string/pPower"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/playerPower"
@@ -175,7 +175,7 @@
                 android:id="@+id/playerHealthLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Player Health:"
+                android:text="@string/pHealth"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/playerHealth"
