@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Joueur"
+            android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="16dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/playerPowerLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Player Power:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/playerPower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/playerPowerLabel"
+                    android:text="100"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/playerHealthLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/playerPowerLabel"
+                    android:text="Player Health:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/playerHealth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/playerHealthLabel"
+                    android:text="10"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/enemyPowerLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/playerHealthLabel"
+            android:layout_marginTop="16dp"
+            android:text="Enemy"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/enemyPower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/enemyPowerLabel"
+            android:layout_marginStart="8dp"
+            android:text="93"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/attackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/enemyPowerLabel"
+                android:layout_marginTop="16dp"
+                android:text="Attack" />
+
+            <Button
+                android:id="@+id/fleeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/enemyPowerLabel"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@id/attackButton"
+                android:layout_marginStart="16dp"
+                android:text="Flee" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
