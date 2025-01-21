@@ -11,4 +11,17 @@
     <string name="flee">Fuite</string>
     <string name="resultTitle">Résultat du combat</string>
     <string name="result">En attente...</string>
+    <string name="settings">Paramètres</string>
+    <string name="initial_power">Puissance initiale du joueur</string>
+    <string name="initial_health">Points de vie initiale du joueur</string>
+    <string name="max_enemy_power">Puissance maximale des ennemis</string>
+    <string name="difficulty">Difficulté</string>
+    <string name="player">Joueur</string>
+    <string name="toast_text">Vous avez gagné !</string>
+    <string name="save">Enregistrer</string>
+    <string-array name="difficulty_levels">
+        <item>Facile</item>
+        <item>Moyen</item>
+        <item>Difficile</item>
+    </string-array>
 </resources>

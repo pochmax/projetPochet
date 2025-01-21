@@ -45,7 +45,7 @@ public class CombatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_combat);
 
-        // Retrieve player and enemy stats from the intent
+        // Charger les données du combat à partir de l'intent
         playerPower = getIntent().getIntExtra("playerPower", 100);
         playerHealth = getIntent().getIntExtra("playerHealth", 10);
         enemyPower = getIntent().getIntExtra("enemyPower", 1);
@@ -58,7 +58,7 @@ public class CombatActivity extends AppCompatActivity {
         playerHealthTextView = findViewById(R.id.playerHealth);
         enemyPowerTextView = findViewById(R.id.enemyPower);
 
-
+        // Set initial values
         Random random = new Random();
         int randomIndex = random.nextInt(monsterImages.length);
         int monsterImageRes = monsterImages[randomIndex];
@@ -75,25 +75,25 @@ public class CombatActivity extends AppCompatActivity {
         Button attackButton = findViewById(R.id.attackButton);
         Button fleeButton = findViewById(R.id.fleeButton);
 
-        // Set click listeners
         attackButton.setOnClickListener(v -> performAttack());
         fleeButton.setOnClickListener(v -> performFlee());
     }
 
     private void performAttack() {
+        // Gerer les facteurs aléatoires
         Random random = new Random();
         double playerFactor = random.nextDouble();
         double enemyFactor = random.nextDouble();
-
+        // Calculer le résultat du combat
         double result = playerPower * playerFactor - enemyPower * enemyFactor;
 
         if (result >= 0) {
-            // Victory
+            // Victoire
             playerPower += 10;
             resultTextView = "Victoire!";
             endCombat(true, false);
         } else {
-            // Defeat
+            // Defaite
             playerHealth -= 3;
             if (playerHealth <= 0) {
                 resultTextView = "Vous avez perdu la partie";
@@ -105,7 +105,9 @@ public class CombatActivity extends AppCompatActivity {
     }
 
     private void performFlee() {
+        // Gerer les facteurs aléatoires
         playerHealth -= 1;
+
         if (playerHealth <= 0) {
             resultTextView = "Vous avez perdu la partie";
         } else {
@@ -115,6 +117,7 @@ public class CombatActivity extends AppCompatActivity {
     }
 
     private void endCombat(boolean enemyDefeated, boolean roomIncomplete) {
+        // Retourner les données du combat
         Intent resultIntent = new Intent();
         resultIntent.putExtra("playerPower", playerPower);
         resultIntent.putExtra("playerHealth", playerHealth);
@@ -126,6 +129,7 @@ public class CombatActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
+        // Mettre à jour les vues
         playerPowerTextView.setText(String.valueOf(playerPower));
         playerHealthTextView.setText(String.valueOf(playerHealth));
         enemyPowerTextView.setText(String.valueOf(enemyPower));
