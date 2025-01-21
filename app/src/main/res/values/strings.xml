@@ -9,4 +9,6 @@
     <string name="enemy">Adversaire</string>
     <string name="attack">Attaque</string>
     <string name="flee">Fuite</string>
+    <string name="resultTitle">Résultat du combat</string>
+    <string name="result">En attente...</string>
 </resources>
