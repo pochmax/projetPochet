@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".CombatActivity"/>
         <activity android:name=".SettingsActivity"/>
+        <activity android:name=".HighScoreActivity"/>
     </application>
 
 </manifest>

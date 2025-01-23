@@ -1,5 +1,6 @@
 package com.example.projetpochet;
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -11,12 +12,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,11 +45,17 @@ public class MainActivity extends AppCompatActivity {
     private boolean[] roomStatus = new boolean[16]; //
     private int potionRoomIndex = -1; // Pièce contenant la potion
     private int charmRoomIndex = -1; // Pièce contenant le charme
-
+    private SharedPreferences preferences;
+    private static final String HIGH_SCORES_KEY = "high_scores";
+    private int currentLevel = 1; // Niveau initial
+    private TextView levelTextView; // Pour afficher le niveau dans l'interface
+    private String difficulty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = getSharedPreferences("high_scores", MODE_PRIVATE);
+
         // Charger les paramètres du jeu
         loadGameSettings();
         // Initialize UI elements
@@ -51,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         playerPowerTextView = findViewById(R.id.playerPower);
         playerHealthTextView = findViewById(R.id.playerHealth);
         resultTextView = findViewById(R.id.result);
+        levelTextView = findViewById(R.id.levelTextView);
 
         Random random = new Random();
 
@@ -62,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             int buttonId = getResources().getIdentifier("room" + (i + 1), "id", getPackageName());
             roomButtons[i] = findViewById(buttonId);
             roomButtons[i].setImageResource(R.drawable.room_unexplored);
-            int sizeInDp = 90;
+            int sizeInDp = 85;
             float scale = getResources().getDisplayMetrics().density;
             int sizeInPx = (int) (sizeInDp * scale + 0.5f);
 
@@ -149,13 +162,14 @@ public class MainActivity extends AppCompatActivity {
     private void showGameOverMessage() {
         // Afficher un message de défaite
         resultTextView.setText("Vous avez perdu la partie.");
+        promptPlayerNameAndAddHighScore(difficulty, playerPower);
         disableGame();
     }
 
     private void showVictoryMessage() {
         // Afficher un message de victoire
         resultTextView.setText("Bravo! Vous avez gagné la partie.");
-        disableGame();
+        nextLevel();
     }
 
     private void disableGame() {
@@ -170,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         unexploredRoomsTextView.setText(String.valueOf(unexploredRooms));
         playerPowerTextView.setText(String.valueOf(playerPower));
         playerHealthTextView.setText(String.valueOf(playerHealth));
+        levelTextView.setText("Niveau : " + currentLevel);
         resultTextView.setText(result);
     }
 
@@ -189,6 +204,11 @@ public class MainActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (item.getItemId() == R.id.high_scores) {
+            Intent intent = new Intent(this, HighScoreActivity.class);
             startActivity(intent);
             return true;
         }
@@ -236,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         playerPower = preferences.getInt("initialPower", 100);
         playerHealth = preferences.getInt("initialHealth", 10);
         maxEnemyPower = preferences.getInt("maxEnemyPower", 150);
-        String difficulty = preferences.getString("difficulty", "Moyen");
+        difficulty = preferences.getString("difficulty", "Moyen");
 
         // Ajuster les ennemis en fonction de la difficulté
         Random random = new Random();
@@ -255,5 +275,89 @@ public class MainActivity extends AppCompatActivity {
                 playerPower -= 5;
                 break;
         }
+    }
+
+    private void addHighScore(String difficulty, int power, String playerName) {
+        List<Score> scoresForDifficulty = loadHighScoresForDifficulty(difficulty);
+
+        Score score = new Score(playerName, difficulty, power, new Date());
+        scoresForDifficulty.add(score);
+        Collections.sort(scoresForDifficulty); // Trier les scores pour cette difficulté
+
+        if (scoresForDifficulty.size() > 10) {
+            scoresForDifficulty.remove(10); // Conserver uniquement les 10 meilleurs
+        }
+
+        saveHighScoresForDifficulty(difficulty, scoresForDifficulty);
+    }
+
+
+    private void promptPlayerNameAndAddHighScore(String difficulty, int power) {
+        // Créer une boîte de dialogue pour entrer le nom du joueur
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Entrez votre nom");
+
+        // Ajouter un champ de texte
+        final EditText input = new EditText(this);
+        input.setHint("Nom du joueur");
+        builder.setView(input);
+
+        // Bouton de validation
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String playerName = input.getText().toString().trim();
+            if (!playerName.isEmpty()) {
+                addHighScore(difficulty, power, playerName);
+                Toast.makeText(this, "Score ajouté pour " + playerName, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Le nom ne peut pas être vide.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Bouton d'annulation
+        builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
+
+        // Afficher la boîte de dialogue
+        builder.show();
+    }
+
+
+    private List<Score> loadHighScoresForDifficulty(String difficulty) {
+        List<Score> scoresForDifficulty = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            String scoreString = preferences.getString(difficulty + "_" + i, null);
+            if (scoreString != null) {
+                Score score = Score.fromString(scoreString);
+                if (score != null) {
+                    scoresForDifficulty.add(score);
+                }
+            }
+        }
+        return scoresForDifficulty;
+    }
+
+    private void saveHighScoresForDifficulty(String difficulty, List<Score> scores) {
+        SharedPreferences.Editor editor = preferences.edit();
+        for (int i = 0; i < scores.size(); i++) {
+            editor.putString(difficulty + "_" + i, scores.get(i).toString());
+        }
+        editor.apply();
+    }
+
+    private void nextLevel() {
+        currentLevel++; // Augmenter le niveau
+        playerPower += 15; // Augmenter la puissance du joueur au passage de niveau
+        unexploredRooms = 16; // Réinitialiser le nombre de pièces
+        Random random = new Random();
+
+        // Augmenter la puissance des monstres pour le niveau suivant
+        for (int i = 0; i < 16; i++) {
+            roomEnemies[i] = random.nextInt(150) + 30 * currentLevel; // Plus puissant selon le niveau
+            roomStatus[i] = false; // Réinitialiser les pièces
+            roomButtons[i].setImageResource(R.drawable.room_unexplored); // Réinitialiser l'image
+            roomButtons[i].setEnabled(true); // Réactiver les boutons
+        }
+
+        result = "Vous avez atteint le niveau " + currentLevel + " ! Bonne chance.";
+        updateUI(); // Mettre à jour l'interface
     }
 }

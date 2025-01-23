@@ -4,6 +4,8 @@
         android:title="@string/restart"/>
     <item android:id="@+id/settings"
         android:title="@string/settings"/>
+    <item android:id="@+id/high_scores"
+        android:title="@string/high_scores"/>
     <item android:id="@+id/quit"
         android:title="@string/quit"/>
 </menu>

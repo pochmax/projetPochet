@@ -19,6 +19,9 @@
     <string name="player">Joueur</string>
     <string name="toast_text">Vous avez gagné !</string>
     <string name="save">Enregistrer</string>
+    <string name="cancel">Annuler</string>
+    <string name="high_scores">Meilleurs scores</string>
+
     <string-array name="difficulty_levels">
         <item>Facile</item>
         <item>Moyen</item>
